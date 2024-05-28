@@ -1,0 +1,39 @@
+server:
+  port: 8082
+mqtt:
+  hostUrl: tcp://127.0.0.1:1883
+  keepAliveInterval: 60
+  connectionTimeout: 10
+  client-id: mqttClient01
+  server-id: mqttServer01
+  data-topic: sensors/fuel_efficiency
+  will-topic: sensors/fuel_efficiency
+  will-content: mqttServer Unexpected disconnection
+  completion-timeout: 10000
+spring:
+  datasource:
+    #JDBC drivers
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #database url
+    url: jdbc:mysql://127.0.0.1:3306/engindata?serverTimezone=Asia/Shanghai
+    #database username and password
+    username: root
+    password: Jiang1216
+    #database connection pool
+    druid:
+      initial-size: 3
+      min-idle: 3
+      max-active: 100
+      max-wait: 60000
+      stat-view-servlet:
+        login-username: admin
+        login-password: 123456
+        enabled: true
+        url-pattern: /druid/*
+
+      filter:
+        stat:
+          log-slow-sql: true
+          slow-sql-millis: 100
+      validation-query: select 1
+
