@@ -1,4 +1,4 @@
-package com.example.rear.config.returnConfig;
+package com.example.rear.config;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;

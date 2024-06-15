@@ -1,5 +1,7 @@
 package com.example.rear.service;
 
+import com.example.rear.config.KafkaUtil;
+import com.example.rear.config.snowflake.SnowFlakeIdWorker;
 import com.example.rear.controller.vo.EngineDataVo;
 import com.example.rear.dao.EnginDataDao;
 import com.example.rear.mapper.po.EnginData;
@@ -19,6 +21,10 @@ public class DataService {
     private MqttListener mqttListener;
     @Autowired
     private EnginDataDao enginDataDao;
+    @Autowired
+    private KafkaUtil kafkaUtil;
+    @Autowired
+    private SnowFlakeIdWorker snowFlakeIdWorker;
     @Transactional
     public EngineDataVo getLatestData(){
         Optional<EnginData> engineData = this.enginDataDao.findLatestEnginData(0,1);
@@ -31,4 +37,11 @@ public class DataService {
                 .map(EngineDataVo::new)
                 .collect(Collectors.toList());
     }
+    @Transactional
+    public void sendKafka(){
+        Optional<EnginData> engineData = this.enginDataDao.findLatestEnginData(0,1);
+        String key = String.valueOf(snowFlakeIdWorker.nextId());
+        this.kafkaUtil.sendMessages(engineData.toString(),"engineData",key);
+    }
+
 }
